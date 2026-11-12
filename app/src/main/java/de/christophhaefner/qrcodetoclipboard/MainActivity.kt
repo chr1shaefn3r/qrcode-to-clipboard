@@ -1,7 +1,6 @@
 package de.christophhaefner.qrcodetoclipboard
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,17 +11,20 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeView
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 
-private const val REQUEST_CAMERA = 1
-
 /** How long a code has to be out of view before scanning it again counts as a new scan. */
 private const val RESCAN_AFTER_MS = 2000L
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var scanner: BarcodeView
     private lateinit var status: TextView
@@ -30,6 +32,12 @@ class MainActivity : Activity() {
     private var lastValue: String? = null
     private var lastSeenAt = 0L
     private var permissionRequested = false
+
+    private val cameraPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            // When granted, onResume follows and starts the camera.
+            status.setText(if (granted) R.string.scan_hint else R.string.camera_permission_needed)
+        }
 
     private val callback = BarcodeCallback { result ->
         val value = result.text ?: return@BarcodeCallback
@@ -50,10 +58,18 @@ class MainActivity : Activity() {
         scanner.decoderFactory = DefaultDecoderFactory(listOf(BarcodeFormat.QR_CODE))
         scanner.decodeContinuous(callback)
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.bottom_bar)) { bar, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            bar.updatePadding(left = bars.left, right = bars.right, bottom = bars.bottom)
+            insets
+        }
+
         findViewById<View>(R.id.history).setOnClickListener {
             startActivity(Intent(this, HistoryActivity::class.java))
         }
-        status.setOnClickListener {
+        findViewById<View>(R.id.status_card).setOnClickListener {
             if (!hasCameraPermission()) requestCameraPermission()
         }
     }
@@ -76,7 +92,7 @@ class MainActivity : Activity() {
         copyToClipboard(value)
         History.add(this, value)
         status.text = getString(R.string.copied, value)
-        scanner.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        scanner.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
     }
 
     private fun hasCameraPermission() =
@@ -91,17 +107,6 @@ class MainActivity : Activity() {
             return
         }
         permissionRequested = true
-        requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode != REQUEST_CAMERA) return
-        if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
-            status.setText(R.string.scan_hint)
-            // onResume follows and starts the camera.
-        } else {
-            status.setText(R.string.camera_permission_needed)
-        }
+        cameraPermission.launch(Manifest.permission.CAMERA)
     }
 }

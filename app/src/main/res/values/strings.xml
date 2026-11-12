@@ -2,9 +2,9 @@
     <string name="app_name">QR to Clipboard</string>
     <string name="history_title">Last scans</string>
     <string name="history_button">Show last scans</string>
+    <string name="back">Back</string>
     <string name="history_empty">No scans yet</string>
     <string name="scan_hint">Point the camera at a QR code</string>
     <string name="copied">Copied: %1$s</string>
-    <string name="copied_toast">Copied to clipboard</string>
     <string name="camera_permission_needed">Camera permission is needed to scan QR codes. Tap to grant.</string>
 </resources>

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "de.christophhaefner.qrcodetoclipboard"
-        minSdk = 26
+        minSdk = 36
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -28,5 +28,6 @@ kotlin {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:1.14.0")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

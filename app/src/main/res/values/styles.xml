@@ -1,7 +1,8 @@
 <resources>
-    <style name="AppTheme" parent="android:Theme.DeviceDefault.DayNight" />
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar" />
 
-    <style name="AppTheme.Scanner" parent="android:Theme.DeviceDefault.NoActionBar">
+    <!-- The controls float above the camera picture, so the scanner is always dark. -->
+    <style name="AppTheme.Scanner" parent="Theme.Material3.DynamicColors.Dark.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 </resources>
