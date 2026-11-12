@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- three finder patterns and a few data modules, inside the 66dp safe zone -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M30,30h20v20h-20zM35,35v10h10v-10zM58,30h20v20h-20zM63,35v10h10v-10zM30,58h20v20h-20zM35,63v10h10v-10z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M38,38h4v4h-4zM66,38h4v4h-4zM38,66h4v4h-4zM58,58h8v8h-8zM70,58h8v8h-8zM64,66h6v6h-6zM58,72h6v6h-6zM72,72h6v6h-6z" />
+</vector>
