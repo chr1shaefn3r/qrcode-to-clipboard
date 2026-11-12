@@ -5,7 +5,7 @@ It runs on Android 16 or newer. The button in the bottom corner lists the last 1
 
 ## Build
 
-Needs a JDK (17 or newer) and the Android SDK with platform 36 (`ANDROID_HOME` or `sdk.dir` in `local.properties`).
+Needs a JDK (17 or newer) and the Android SDK with platform 37.2 (`ANDROID_HOME` or `sdk.dir` in `local.properties`).
 
 ```bash
 ./gradlew assembleDebug

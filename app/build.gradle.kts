@@ -2,7 +2,6 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
 }
 
 // Optional release signing key: see README. Without it, release builds are signed with the debug key.
@@ -13,12 +12,16 @@ val keystoreProperties = Properties().apply {
 
 android {
     namespace = "de.christophhaefner.qrcodetoclipboard"
-    compileSdk = 36
+    compileSdk {
+        version = release(37) { minorApiLevel = 2 }
+    }
+
+    buildToolsVersion = "37.0.0"
 
     defaultConfig {
         applicationId = "de.christophhaefner.qrcodetoclipboard"
         minSdk = 36
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
     }
@@ -46,12 +49,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
 
